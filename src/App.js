@@ -10,15 +10,22 @@ import SignUp from './components/auth/SignUp'
 import SignIn from './components/auth/SignIn'
 import SignOut from './components/auth/SignOut'
 import ChangePassword from './components/auth/ChangePassword'
+import GameHall from './components/game/GameHall'
+import GameLobby from './components/game/GameLobby'
+// import CreateGame from './components/game/CreateGame'
+// import IndexGames from './components/game/IndexGames.js'
 
 class App extends Component {
   constructor (props) {
     super(props)
     this.state = {
       user: null,
-      msgAlerts: []
+      msgAlerts: [],
+      gameId: 0
     }
   }
+
+  setGameId = (id) => this.setState({ id })
 
   setUser = (user) => this.setState({ user })
 
@@ -44,8 +51,8 @@ class App extends Component {
 
     return (
       <Fragment>
-	      <Header user={user} />
-	      {msgAlerts.map((msgAlert) => (
+        <Header user={user} />
+        {msgAlerts.map((msgAlert) => (
           <AutoDismissAlert
             key={msgAlert.id}
             heading={msgAlert.heading}
@@ -55,8 +62,8 @@ class App extends Component {
             deleteAlert={this.deleteAlert}
           />
         ))}
-	      <main className='container'>
-	        <Route
+        <main className='container'>
+          <Route
             path='/sign-up'
             render={() => (
               <SignUp msgAlert={this.msgAlert} setUser={this.setUser} />
@@ -84,6 +91,26 @@ class App extends Component {
             path='/change-password'
             render={() => (
               <ChangePassword msgAlert={this.msgAlert} user={user} />
+            )}
+          />
+          <AuthenticatedRoute
+            exact
+            user={user}
+            path='/games/'
+            render={() => (
+              <>
+                <GameHall msgAlert={this.msgAlert} user={user} setGameId={this.setGameId}/>
+                {/* Create and index are now children of the gamehall, redirect to game lobby below */}
+              </>
+            )}
+          />
+          <AuthenticatedRoute
+            user={user}
+            path='/games/:id'
+            render={() => (
+              <>
+                <GameLobby msgAlert={this.msgAlert} user={user} />
+              </>
             )}
           />
         </main>

@@ -1,6 +1,7 @@
 import apiUrl from '../apiConfig'
 import axios from 'axios'
 
+// user routes
 export const signUp = (credentials) => {
   return axios({
     method: 'POST',
@@ -33,7 +34,7 @@ export const signOut = (user) => {
     url: apiUrl + '/sign-out/',
     method: 'DELETE',
     headers: {
-      Authorization: `Bearer ${user.token}`
+      Authorization: `Token ${user.token}` // default is bearer, but that is for the express server: i am using django and it expects the authorization header to be Token 'user.token'
     }
   })
 }
@@ -43,7 +44,7 @@ export const changePassword = (passwords, user) => {
     url: apiUrl + '/change-password/',
     method: 'PATCH',
     headers: {
-      Authorization: `Bearer ${user.token}`
+      Authorization: `Token ${user.token}`
     },
     data: {
       passwords: {
