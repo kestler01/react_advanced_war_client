@@ -8,3 +8,4 @@ export const changePasswordFailure = 'Failed to change passwords. Check your old
 export const createGameSuccess = 'Game created successfully: navigating to game lobby'
 export const createGameFailure = 'Failed to create game, please make sure you are signed in and that a name is provided for your game instance'
 export const getNoGamesFailure = 'There are no games yet, make a game !'
+export const DeleteGameSuccess = 'Game Deleted, navigating to game hall'

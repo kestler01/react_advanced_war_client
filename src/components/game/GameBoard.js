@@ -1,98 +1,143 @@
-import React, { Component } from 'react'
-// import { Container, Row, Col } from 'react-bootstrap'
-import { withRouter } from 'react-router-dom'
-import { getGame } from '../../api/games'
-import { updatePiece, indexPieces } from '../../api/pieces'
-// app - gameHall - index && create
-// ||
-// app - lobby - board - cells && pieces **? make them siblings or have cells be the parent of pieces ?
 
-// define a game-board class ( needs state data, pieces, turn, owner.)
+import { Container, Row, Col } from 'react-bootstrap'
+import { withRouter } from 'react-router-dom'
+import React, { Component } from 'react'
+import { v4 as uuid } from 'uuid'
+
 class GameBoard extends Component {
   constructor (props) {
     super(props)
 
-    this.state = {
-      game: {},
-      gamePieces: []
+    this.state = { cellArray: [] }
+  }
+
+  // creates an array of arrays, filled with objects with KVP corresponding to their coordinates.
+  // exp: size 3 returns =
+  // [[{0,0},{1,0},{2,0}],
+  // [{0,1},{1,1},{2,1}],
+  // [{0,2},{1,2},{2,2}]]
+
+  createBoard = (size) => {
+    const cellArray = []
+    for (let y = 0; y < size; y++) {
+      cellArray.push([])
+      for (let x = 0; x < size; x++) {
+        cellArray[y].push({ x: x, y: y })
+      }
     }
+    return cellArray
   }
 
-  initialSet = (bigGameObj) => {
-    const game = bigGameObj.game
-    const gamePieces = bigGameObj.game.game_pieces
-    this.setState({
-      game: game,
-      gamePieces: gamePieces
-    })
+  componentDidMount () { // return here may not be necessary
+    return (this.setState({ cellArray: this.createBoard(7) }))
   }
 
-  // expects game to be = {gameDetails}, may need to be game.game if it is= {game:{gameDetails}}
-  setGame = (game) =>
-    this.setState({
-      game: game.game,
-      gamePieces: this.state.gamePieces
-    })
+  // returns html / jsx row and col with x and y coordinates
+  drawCells = (cellArray) => {
+    // console.log('cellArray:', cellArray)
+    // console.log('this.state:', this.state)
+    console.log('this.props:', this.props)
+    // const boardJSX = []
+    const board = cellArray.map((rowArray) => {
+      // console.log('ROW ARRAY NOTE:', rowArray)
 
-  // when you have multiple changes or the array already built.
-  setPieces = (pieces) =>
-    this.setState({
-      game: this.state.game,
-      gamePieces: pieces.game_pieces
-    })
+      const row = rowArray.map((cell) => (
+        <Col key={uuid()} className='border border-dark'>
+          {' '}
+          {cell.x}, {cell.y}{' '}
+        </Col>
+      )
+      )
+      // console.log('BOARDJSX:', boardJSX)
 
-  // singular change, builds the new array to set. only expects the new changed piece obj
-  setPiece = (myPiece) => {
-    // need to pull out a piece. from the gamePieces state object by id, get the index, and splice in the new piece
-    const targetPiece = this.state.gamePieces.find(
-      (piece) => piece.id === myPiece.id
+      // console.log('row:', row)
+      return (<Row key={uuid()}> {row} </Row>)
+    })
+    // console.log('BOARD?', board)
+    return (
+      <Container>
+
+        <Row><span>{this.props.game.name}</span></Row>
+        <Row>{board}</Row>
+      </Container>
     )
-    const targetPieceIndex = this.state.gamePieces.findIndex(targetPiece)
-    const piecesArray = this.state.gamePieces
-    const newPiecesArray = piecesArray.splice(targetPieceIndex, 1, myPiece)
-    this.setState({
-      game: this.state.game,
-      gamePieces: newPiecesArray
-    })
   }
 
-  updatePiece (piece) {
-    const { user } = this.props
-    const gameId = this.state.game.id
-    // updatePiece expects : user, gameId, pieceId, pieceData, returns 204, no body
-    updatePiece(user, gameId, piece.id, piece)
-    // index Pieces expects : (user, gameId)
-    // returns {game_pieces:[ array of pieces as {KVPs},{KVPs}] }
-      .then(() => indexPieces(user, gameId))
-      .then((res) => {
-        console.log(res)
-        this.setPieces(res)
-      })
-      .catch((res) => console.log(res))
+  // key={board.row.indexOf(cell)}{ board.indexOf(row)} potential key for the cells
+  render () {
+    // console.log('state in game board.js render:', this.state)
+    if (this.state.cellArray.length === 0) {
+      return <div>loading</div>
+    } else {
+      return this.drawCells(this.state.cellArray)
+    }
+    // return (
+    //   <container>
+    //     <Row>
+    //       <Col className='border border-dark'>0,0</Col>
+    //       <Col className='border border-dark'>1,0</Col>
+    //       <Col className='border border-dark'>2,0</Col>
+    //       <Col className='border border-dark'>3,0</Col>
+    //       <Col className='border border-dark'>4,0</Col>
+    //     </Row>
+    //     <Row>
+    //       <Col className='border border-dark'>0,1</Col>
+    //       <Col className='border border-dark'>1,1</Col>
+    //       <Col className='border border-dark'>2,1</Col>
+    //       <Col className='border border-dark'>3,1</Col>
+    //       <Col className='border border-dark'>4,1</Col>
+    //     </Row>
+    //     <Row>
+    //       <Col className='border border-dark'>0,2</Col>
+    //       <Col className='border border-dark'>1,2</Col>
+    //       <Col className='border border-dark'>2,2</Col>
+    //       <Col className='border border-dark'>3,2</Col>
+    //       <Col className='border border-dark'>4,2</Col>
+    //     </Row>
+    //     <Row>
+    //       <Col className='border border-dark'>0,3</Col>
+    //       <Col className='border border-dark'>1,3</Col>
+    //       <Col className='border border-dark'>2,3</Col>
+    //       <Col className='border border-dark'>3,3</Col>
+    //       <Col className='border border-dark'>4,3</Col>
+    //     </Row>
+    //     <Row>
+    //       <Col className='border border-dark'>0,4</Col>
+    //       <Col className='border border-dark'>1,4</Col>
+    //       <Col className='border border-dark'>2,4</Col>
+    //       <Col className='border border-dark'>3,4</Col>
+    //       <Col className='border border-dark'>4,4</Col>
+    //     </Row>
+    //   </container>
+    // )
   }
-
-  componentDidMount () {
-    console.log('this.props.match.params.id', this.props.match.params.id)
-    console.log('state:', this.state)
-    console.log('props:', this.props)
-    const { user } = this.props
-    // getGame expects a user, and the id, returns an object 'game': { with all the good stuff }
-    getGame(user, this.props.match.params.id)
-      .then((res) => {
-        console.log('after getGame call:', res)
-        return res
-      })
-      .then((res) => this.initialSet(res.data))
-      .catch((res) => console.log(res))
-  }
-  // to update pieces you must do a **piece patch**, they do NOT live on the game model. any patches to the game will not affect them
-
-  
-
 }
 
 export default withRouter(GameBoard)
 
-// define a board cell class ( needs position x , y )
+// className=" border border-dark"
+// const GameHall = (props) => {
+//   return (
+//     <Container>
+//       <Row>
+//         <span>Welcome to the Advance War Game Hall</span>
+//       </Row>
+//       <Row>
+//         <Col>{CreateGame(props)}</Col>
+//         <Col>{IndexGames(props)}</Col>
+//       </Row>
+//     </Container>
+//   )
+// }
 
-// define a piece class ( needs position, x and y)
+// class BoardCell extends Component {
+//   constructor (props) {
+//     super(props)
+
+//     this.state = {}
+//   }
+
+//   return {
+//     <Col> {props.x}, {props.y} </Col>
+//   }
+// }

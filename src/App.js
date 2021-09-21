@@ -11,7 +11,8 @@ import SignIn from './components/auth/SignIn'
 import SignOut from './components/auth/SignOut'
 import ChangePassword from './components/auth/ChangePassword'
 import GameHall from './components/game/GameHall'
-import GameLobby from './components/game/GameLobby'
+// import GameLobby from './components/game/GameLobby'
+import GameInstance from './components/game/GameInstance'
 // import CreateGame from './components/game/CreateGame'
 // import IndexGames from './components/game/IndexGames.js'
 
@@ -21,15 +22,27 @@ class App extends Component {
     this.state = {
       user: null,
       msgAlerts: [],
-      gameId: 0
+      game: null,
+      gamePieces: null
     }
   }
 
-  setGameId = (id) => this.setState({ id })
+  // setGame = (game) => this.setState({ game })
+
+  // expects game to be = {gameDetails}, may need to be game.game if it is= {game:{gameDetails}}
+  setGame = (game) => this.setState({ game: game })
+
+  clearGame = () => this.setState({ game: null })
+
+  setPieces = (pieces) => this.setState({ gamePieces: pieces })
+
+  clearPieces = () => this.setState({ gamePieces: null })
 
   setUser = (user) => this.setState({ user })
 
   clearUser = () => this.setState({ user: null })
+
+  // Alerts from template
 
   deleteAlert = (id) => {
     this.setState((state) => {
@@ -109,7 +122,7 @@ class App extends Component {
             path='/games/:id'
             render={() => (
               <>
-                <GameLobby msgAlert={this.msgAlert} user={user} />
+                <GameInstance msgAlert={this.msgAlert} user={user} setPieces={this.setPieces} clearPieces={this.clearPieces} setGame={this.setGame} clearGame={this.clearGame} game={this.state.game} gamePieces={this.state.gamePieces}/>
               </>
             )}
           />
