@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/react_advanced_war_client/static/css/main.432dfbff.chunk.css",
+    "main.js": "/react_advanced_war_client/static/js/main.27bd40a9.chunk.js",
+    "main.js.map": "/react_advanced_war_client/static/js/main.27bd40a9.chunk.js.map",
+    "runtime-main.js": "/react_advanced_war_client/static/js/runtime-main.ceecf081.js",
+    "runtime-main.js.map": "/react_advanced_war_client/static/js/runtime-main.ceecf081.js.map",
+    "static/js/2.3b594368.chunk.js": "/react_advanced_war_client/static/js/2.3b594368.chunk.js",
+    "static/js/2.3b594368.chunk.js.map": "/react_advanced_war_client/static/js/2.3b594368.chunk.js.map",
+    "index.html": "/react_advanced_war_client/index.html",
+    "static/css/main.432dfbff.chunk.css.map": "/react_advanced_war_client/static/css/main.432dfbff.chunk.css.map",
+    "static/js/2.3b594368.chunk.js.LICENSE.txt": "/react_advanced_war_client/static/js/2.3b594368.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.ceecf081.js",
+    "static/js/2.3b594368.chunk.js",
+    "static/css/main.432dfbff.chunk.css",
+    "static/js/main.27bd40a9.chunk.js"
+  ]
+}
