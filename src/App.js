@@ -23,14 +23,17 @@ class App extends Component {
       user: null,
       msgAlerts: [],
       game: null,
-      gamePieces: null
+      gamePieces: null,
+      turn: 0
     }
   }
 
   // setGame = (game) => this.setState({ game })
 
   // expects game to be = {gameDetails}, may need to be game.game if it is= {game:{gameDetails}}
-  setGame = (game) => this.setState({ game: game })
+  setTurn = (turn) => this.setState({ turn })
+
+  setGame = (game) => this.setState({ game })
 
   clearGame = () => this.setState({ game: null })
 
@@ -122,7 +125,7 @@ class App extends Component {
             path='/games/:id'
             render={() => (
               <>
-                <GameInstance msgAlert={this.msgAlert} user={user} setPieces={this.setPieces} clearPieces={this.clearPieces} setGame={this.setGame} clearGame={this.clearGame} game={this.state.game} gamePieces={this.state.gamePieces}/>
+                <GameInstance msgAlert={this.msgAlert} user={user} setPieces={this.setPieces} clearPieces={this.clearPieces} setGame={this.setGame} clearGame={this.clearGame} game={this.state.game} gamePieces={this.state.gamePieces} turn={this.state.turn} setTurn={this.setTurn}/>
               </>
             )}
           />

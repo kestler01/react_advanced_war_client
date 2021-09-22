@@ -57,7 +57,7 @@ class GameBoard extends Component {
     return (
       <Container>
 
-        <Row><span>{this.props.game.name}</span></Row>
+        <Row><Col>{this.props.game.name}</Col><Col>TURN:{this.props.turn}</Col></Row>
         <Row>{board}</Row>
       </Container>
     )
@@ -71,45 +71,6 @@ class GameBoard extends Component {
     } else {
       return this.drawCells(this.state.cellArray)
     }
-    // return (
-    //   <container>
-    //     <Row>
-    //       <Col className='border border-dark'>0,0</Col>
-    //       <Col className='border border-dark'>1,0</Col>
-    //       <Col className='border border-dark'>2,0</Col>
-    //       <Col className='border border-dark'>3,0</Col>
-    //       <Col className='border border-dark'>4,0</Col>
-    //     </Row>
-    //     <Row>
-    //       <Col className='border border-dark'>0,1</Col>
-    //       <Col className='border border-dark'>1,1</Col>
-    //       <Col className='border border-dark'>2,1</Col>
-    //       <Col className='border border-dark'>3,1</Col>
-    //       <Col className='border border-dark'>4,1</Col>
-    //     </Row>
-    //     <Row>
-    //       <Col className='border border-dark'>0,2</Col>
-    //       <Col className='border border-dark'>1,2</Col>
-    //       <Col className='border border-dark'>2,2</Col>
-    //       <Col className='border border-dark'>3,2</Col>
-    //       <Col className='border border-dark'>4,2</Col>
-    //     </Row>
-    //     <Row>
-    //       <Col className='border border-dark'>0,3</Col>
-    //       <Col className='border border-dark'>1,3</Col>
-    //       <Col className='border border-dark'>2,3</Col>
-    //       <Col className='border border-dark'>3,3</Col>
-    //       <Col className='border border-dark'>4,3</Col>
-    //     </Row>
-    //     <Row>
-    //       <Col className='border border-dark'>0,4</Col>
-    //       <Col className='border border-dark'>1,4</Col>
-    //       <Col className='border border-dark'>2,4</Col>
-    //       <Col className='border border-dark'>3,4</Col>
-    //       <Col className='border border-dark'>4,4</Col>
-    //     </Row>
-    //   </container>
-    // )
   }
 }
 

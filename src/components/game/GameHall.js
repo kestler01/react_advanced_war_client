@@ -5,9 +5,9 @@ import { withRouter } from 'react-router-dom'
 import CreateGame from './CreateGame'
 import IndexGames from './IndexGames'
 
-// App < GameHall <indexgames & creategame < gamelobby < ingameview
+// App - GameHall - /indexgames/ & creategame
 //  || parallel
-// App < GameLobby
+// App - /GameLobby/ - ingameview
 
 // pass the PROPS!
 const GameHall = (props) => {

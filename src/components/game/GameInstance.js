@@ -101,9 +101,14 @@ class GameInstance extends Component {
         .finally(() => this.props.history.push('/games/'))
     }
 
+    EndTurn () {
+      this.props.setTurn(this.props.turn + 1)
+    }
+
     // to update pieces you must do a **piece patch**, they do NOT live on the game model. any patches to the game will not affect them
     render () {
       console.log('in game instance render props & props.game:', this.props, this.props.game)
+
       // console.log('IN GAME INSTANCE, AT RENDER. THE game STATE IS:', this.props.game)
       if (!this.props.game) { return (<div> loading</div>) }
       return (
@@ -111,6 +116,8 @@ class GameInstance extends Component {
         <>
           < GameBoard {...this.props} />
           <Button onClick={() => { this.DeleteGame(this.props) }}> Delete Game </Button>
+          <Button onClick={() => { this.EndTurn(this.props) }}> EndTurn </Button>
+          <Button onClick={() => { }}> NewPiece </Button>
         </>
       )
     }
