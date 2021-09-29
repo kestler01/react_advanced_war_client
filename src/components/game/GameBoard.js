@@ -4,6 +4,8 @@ import { withRouter } from 'react-router-dom'
 import React, { Component } from 'react'
 import { v4 as uuid } from 'uuid'
 
+// import PieceInstance from './PieceInstance'
+
 class GameBoard extends Component {
   constructor (props) {
     super(props)
@@ -38,6 +40,8 @@ class GameBoard extends Component {
     // console.log('this.state:', this.state)
     console.log('this.props:', this.props)
     // const boardJSX = []
+    const gamePieces = this.props.gamePieces
+    console.log(gamePieces)
     const board = cellArray.map((rowArray) => {
       // console.log('ROW ARRAY NOTE:', rowArray)
 

@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap'
 // import { Container, Row, Col } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
 import { getGame, deleteGame, updateGame } from '../../api/games'
-import { updatePiece, indexPieces } from '../../api/pieces'
+import { updatePiece, indexPieces, createPiece } from '../../api/pieces'
 
 import { DeleteGameSuccess } from '../AutoDismissAlert/messages'
 import GameBoard from './GameBoard'
@@ -34,27 +34,25 @@ class GameInstance extends Component {
       console.log('IN INITIAL SET:GAMEPIECES =', newGamePieces)
     }
 
-    // does not have a use case atm
-    // singular change, builds the new array to set. only expects the new changed piece obj
-    // setPiece = (myPiece) => {
-    //   // need to pull out a piece. from the gamePieces state object by id, get the index, and splice in the new piece
-    //   const targetPiece = this.state.gamePieces.find(
-    //     (piece) => piece.id === myPiece.id
-    //   )
-    //   const targetPieceIndex = this.state.gamePieces.findIndex(targetPiece)
-    //   const piecesArray = this.state.gamePieces
-    //   const newPiecesArray = piecesArray.splice(targetPieceIndex, 1, myPiece)
-    //   this.setState({
-    //     game: this.state.game,
-    //     gamePieces: newPiecesArray
-    //   })
-    // }
+    CreatNewPiece (piece) {
+      const { user, game, gamePieces, setPieces } = this.props
+      const piecesArray = gamePieces
+      createPiece(user, piece, game.id)
+        .then((res) => {
+          console.log('IN CREATE NEW PIECE, the response from api is:', res)
+          return (res.data)
+        })
+        .then((data) => {
+          piecesArray.push(data.piece)
+          setPieces(piecesArray)
+        })
+    }
 
     updatePiece (piece) {
       const { user } = this.props
       const gameId = this.state.game.id
       // updatePiece expects : user, gameId, pieceId, pieceData, returns 204, no body
-      updatePiece(user, gameId, piece.id, piece)
+      updatePiece(user, gameId, piece.id, piece) // api call
       // index Pieces expects : (user, gameId)
       // returns {game_pieces:[ array of pieces as {KVPs},{KVPs}] }
         .then(() => indexPieces(user, gameId))
@@ -73,7 +71,7 @@ class GameInstance extends Component {
       // getGame expects a user, and the id, returns an object 'game': { with all the good stuff }
       getGame(user, this.props.match.params.id)
         .then((res) => {
-          // console.log('after getGame call:', res)
+          console.log('after getGame call:', res)
           return res
         })
         .then((res) => {
@@ -119,11 +117,15 @@ class GameInstance extends Component {
         .catch((res) => console.log('something went wrong', res))
       // this.props.setTurn(this.props.turn + 1)
     }
+    //       piece: {
+    //     name: pieceData.name,
+    //     position_x: pieceData.position_x,
+    //     position_y: pieceData.position_y
 
     // to update pieces you must do a **piece patch**, they do NOT live on the game model. any patches to the game will not affect them
     render () {
       console.log('in game instance render props & props.game:', this.props, this.props.game)
-
+      const demoPiece = { name: 'marine', position_x: 2, position_y: 2 }
       // console.log('IN GAME INSTANCE, AT RENDER. THE game STATE IS:', this.props.game)
       if (!this.props.game) { return (<div> loading</div>) }
       return (
@@ -132,7 +134,7 @@ class GameInstance extends Component {
           < GameBoard {...this.props} />
           <Button onClick={() => { this.DeleteGame(this.props) }}> Delete Game </Button>
           <Button onClick={() => { this.EndTurn(this.props) }}> EndTurn </Button>
-          <Button onClick={() => { }}> NewPiece </Button>
+          <Button onClick={() => { this.CreatNewPiece(demoPiece) }}> NewPiece </Button>
         </>
       )
     }

@@ -3,7 +3,7 @@ import apiUrl from '../apiConfig'
 import axios from 'axios'
 
 // piece routes
-// create a piece (expects name, rand it's positions)
+// create a piece (expects name, and it's positions)
 export const createPiece = (user, pieceData, gameId) => {
   // user is coming from the state of the app component
   return axios({

@@ -23,7 +23,7 @@ class App extends Component {
       user: null,
       msgAlerts: [],
       game: null,
-      gamePieces: null,
+      gamePieces: [],
       turn: 0 // add to back end model
     }
   }
@@ -39,7 +39,7 @@ class App extends Component {
 
   setPieces = (pieces) => this.setState({ gamePieces: pieces })
 
-  clearPieces = () => this.setState({ gamePieces: null })
+  clearPieces = () => this.setState({ gamePieces: [] })
 
   setUser = (user) => this.setState({ user })
 
