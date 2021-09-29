@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Button } from 'react-bootstrap'
 // import { Container, Row, Col } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
-import { getGame, deleteGame } from '../../api/games'
+import { getGame, deleteGame, updateGame } from '../../api/games'
 import { updatePiece, indexPieces } from '../../api/pieces'
 
 import { DeleteGameSuccess } from '../AutoDismissAlert/messages'
@@ -24,11 +24,12 @@ class GameInstance extends Component {
 
     initialSet = (bigGameObj) => {
       console.log(bigGameObj)
-      const { setPieces, setGame } = this.props
+      const { setPieces, setGame, setTurn } = this.props
       const newGame = bigGameObj.game
       const newGamePieces = bigGameObj.game.game_pieces
       setPieces(newGamePieces)
       setGame(newGame)
+      setTurn(newGame.turn)
       console.log('IN INITIAL SET:GAME =', newGame)
       console.log('IN INITIAL SET:GAMEPIECES =', newGamePieces)
     }
@@ -97,12 +98,26 @@ class GameInstance extends Component {
           })
         )
         .finally(() => this.props.clearGame())
+        .finally(() => this.props.setTurn(null))
         .finally(() => this.props.clearPieces)
         .finally(() => this.props.history.push('/games/'))
     }
 
+    // patch the game, it IS a PARTIAL update, can accept a new name(str), is_over(bool), is_started(bool), and turn(int).
+    // WILL NOT AFFECT PIECES
+    // updateGame = (user, id, gameData)
+    // sends empty response
     EndTurn () {
-      this.props.setTurn(this.props.turn + 1)
+      const gameId = this.props.game.id
+      const updatedGameData = this.props.game
+      updatedGameData.turn += 1
+      updateGame(this.props.user, gameId, updatedGameData)
+        .then(() => {
+          this.props.setGame(updatedGameData)
+          this.props.setTurn(updatedGameData.turn)
+        })
+        .catch((res) => console.log('something went wrong', res))
+      // this.props.setTurn(this.props.turn + 1)
     }
 
     // to update pieces you must do a **piece patch**, they do NOT live on the game model. any patches to the game will not affect them

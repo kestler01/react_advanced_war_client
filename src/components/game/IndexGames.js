@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import ListGroup from 'react-bootstrap/ListGroup'
 import { indexGames } from '../../api/games'
 
+// import { v4 as uuid } from 'uuid'
 // index Games
 
 // App < GameHall <indexgames & creategame
@@ -31,17 +32,17 @@ class IndexGames extends Component {
   //  }, ...
   //  ]
 
-  setGames = (games) => this.setState(games)
+  setGamesIndex = (games) => this.setState(games)
 
   componentDidMount () {
     const { user } = this.props
     // indexGames expects a user, returns an object 'games': with an array of game objects
     indexGames(user)
       .then((res) => {
-        console.log(res)
+        console.log('INDEX games call:', res)
         return res
       })
-      .then((res) => this.setGames(res.data))
+      .then((res) => this.setGamesIndex(res.data))
       .catch((res) => console.log(res))
   }
 
@@ -52,13 +53,15 @@ class IndexGames extends Component {
 
     const drawGameListEntry = (game) => (
       <ListGroup.Item
-        eventKey={game.id} // from react router docs, similar to react, same use
-        disabled // grayed out and no hover- will be implemented later
+        key={game.id}
+        // disabled // grayed out and no hover- will be implemented later
         action // enables hover goodness
-        variant="dark" // makes it dark
-        href={ `/games/${game.id}/`} // href go to other sites, must use Links
+        variant='dark' // makes it dark
+        // link={ `/games/${game.id}/`} // href go to other sites, must use Links
       >
-        {game.name} - {game.id}
+        <Link className='btn' role='button' to={`/games/${game.id}/`}>
+          {game.name} - {game.id}
+        </Link>
       </ListGroup.Item>
     )
     // currently getting a minor/tiny error about the way this link path works

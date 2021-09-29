@@ -42,7 +42,7 @@ export const getGame = (user, id) => {
 // WILL NOT AFFECT PIECES
 export const updateGame = (user, id, gameData) => {
   return axios({
-    url: apiUrl + `/games/${id}`,
+    url: apiUrl + `/games/${id}/`,
     method: 'PATCH',
     headers: {
       Authorization: `Token ${user.token}`

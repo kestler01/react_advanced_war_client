@@ -24,7 +24,7 @@ class App extends Component {
       msgAlerts: [],
       game: null,
       gamePieces: null,
-      turn: 0
+      turn: 0 // add to back end model
     }
   }
 
