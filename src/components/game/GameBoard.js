@@ -5,6 +5,7 @@ import React, { Component } from 'react'
 import { v4 as uuid } from 'uuid'
 // import $ from 'jquery'
 // import PieceInstance from './PieceInstance'
+import GameCell from './GameCell'
 
 /// //////////////////////////////////////////////////////  Gameboard  ////////////////////////////////////////////////////////
 

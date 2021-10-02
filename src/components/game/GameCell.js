@@ -33,7 +33,6 @@ class GameCell extends Component {
   }
 
   ToggleSelected () {
-    console.log('isSelected ?:', this.state.isSelected)
     this.setState({ isSelected: !this.state.isSelected })
   }
 
@@ -43,7 +42,9 @@ class GameCell extends Component {
     } else {
       const cellLayer = this.state.cellLayer
       const pieceLayer = this.state.pieceLayer
-      const selectorColor = this.state.pieceLayer ? 'green' : 'blue'
+      const selectorColor = this.state.pieceLayer
+        ? ('background: rgb(255,255,255) background: radial-gradient(circle, rgba(255,255,255,0) 36%, rgba(54,198,73,1) 100%)')
+        : ('background: rgb(255,255,255) background: radial-gradient(circle, rgba(255,255,255,0) 36%, rgba(54,192,198,1) 100%)')
       // console.log(
       //   ' I am in the render of the GAmeCEll, the state is:',
       //   this.state
@@ -67,7 +68,7 @@ class GameCell extends Component {
           <Col
             key={uuid()}
             className='border border-dark gameCell'
-            style={{ height: '120px', backgroundColor: selectorColor }}
+            style={{ height: '120px', selectorColor }}
             data-x={cellLayer.x}
             data-y={cellLayer.y}
             onClick={() => {

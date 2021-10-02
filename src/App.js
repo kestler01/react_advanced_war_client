@@ -80,6 +80,21 @@ class App extends Component {
         ))}
         <main className='container'>
           <Route
+            exact
+            path='/' // home
+            render={() => (
+              <>
+                <h1>Welcome to <a href="https://www.linkedin.com/in/andrew-kestler/" target="_blank" rel="noreferrer">Andrews</a> Advance War Game Site!</h1><p>title pending</p>
+                <br></br>
+                <p> This is my current in progress passion project and final project for the General Assembly Software Engineering program. </p>
+                <p> My goal with this site is to make a game inspired by the classic Advanced Wars games for the Game Boy Advanced from 2001 and 2003. These were some of my brothers favorite games and I hope to share this with them so that we can play together when it is finished. </p>
+                <p> I would also love to share it with you! I am still very much in development but feel free to explore the site and check out the repository at <a href="https://github.com/kestler01/react_advanced_war_client" target="_blank" rel="noreferrer"> GitHub. </a> </p>
+                <p> Also please dont hesitate to reach out with any questions comments or concerns </p>
+                <p>A quick note as you explore: please do NOT use your real email for accessing the site at this time.</p>
+              </>
+            )}
+          />
+          <Route
             path='/sign-up'
             render={() => (
               <SignUp msgAlert={this.msgAlert} setUser={this.setUser} />
@@ -115,7 +130,11 @@ class App extends Component {
             path='/games/'
             render={() => (
               <>
-                <GameHall msgAlert={this.msgAlert} user={user} setGameId={this.setGameId}/>
+                <GameHall
+                  msgAlert={this.msgAlert}
+                  user={user}
+                  setGameId={this.setGameId}
+                />
                 {/* Create and index are now children of the gamehall, redirect to game lobby below */}
               </>
             )}
@@ -125,7 +144,18 @@ class App extends Component {
             path='/games/:id'
             render={() => (
               <>
-                <GameInstance msgAlert={this.msgAlert} user={user} setPieces={this.setPieces} clearPieces={this.clearPieces} setGame={this.setGame} clearGame={this.clearGame} game={this.state.game} gamePieces={this.state.gamePieces} turn={this.state.turn} setTurn={this.setTurn}/>
+                <GameInstance
+                  msgAlert={this.msgAlert}
+                  user={user}
+                  setPieces={this.setPieces}
+                  clearPieces={this.clearPieces}
+                  setGame={this.setGame}
+                  clearGame={this.clearGame}
+                  game={this.state.game}
+                  gamePieces={this.state.gamePieces}
+                  turn={this.state.turn}
+                  setTurn={this.setTurn}
+                />
               </>
             )}
           />
