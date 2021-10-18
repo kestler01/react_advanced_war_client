@@ -49,7 +49,7 @@ A quick Final note as you explore: please do ***NOT*** use your real email for a
 
 ---
 
-### V1 ScreenShots:
+#### V1 ScreenShots:
 HomePage
 ![advance war home page screenshot](./public/AdvanceWarHomePageScreenShot.jpg)
 
@@ -78,6 +78,10 @@ A user wants to...
 
 ---
 
-Installation instructions:
+#### Installation instructions:
 Want to use this repository as a template for your own application? 
-start by forking and cloning this repository to your own github and remote environment. Run 'npm install', checkout a new branch. I suggest using this alongside the api I developed which is linked above. Do not forget to change the project name and to ensure that the apiConfig file is adjusted to your local settings. To publish your own app, run: 'npm run build'
+start by forking and cloning this repository to your own github and remote environment. 
+Run 'npm install', checkout a new branch. 
+I suggest using this alongside the api I developed which is linked above. 
+Do not forget to change the project name and to ensure that the apiConfig file is adjusted to your local settings. 
+To publish your own app, run: 'npm run build'

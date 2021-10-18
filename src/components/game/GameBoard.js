@@ -37,6 +37,11 @@ class GameBoard extends Component {
     return cellArray
   }
 
+  // expects an array of gameCells to be 'selected' , must add to props for on conditional on click on game cell. Also must pass setSelected as a prop!
+  setSelected = (cells) => {
+    this.setState({ selected: cells })
+  }
+
   componentDidMount () {
     // return here may not be necessary
     return (
@@ -122,11 +127,12 @@ class GameBoard extends Component {
        (cell) => {
          const cellData = cell
          const pieceData = this.state.gamePieces.find((piece) => ((piece.position_x === cellData.x) && (piece.position_y === cellData.y)))
+         const isSelected = this.state.selected.find((cell) => ((cell.x === cellData.x)))
          //  console.log('IN DRAW GAME CELLS ITERATOR, BEFORE RETURN, LOOKING AT CELL DATA AND PIECE DATA:', cellData, pieceData, this.props)
          //  const gameCellData = { cellData, pieceData }
          //  gameCellData.cellData = cellData
          //  gameCellData.pieceData = pieceData
-         return <GameCell cellData={cellData} pieceData={pieceData} key={uuid()} />
+         return <GameCell cellData={cellData} pieceData={pieceData} key={uuid()} setSelected={this.setSelected}/>
        }
        //  < GameBoard {...this.props} />
      )

@@ -14,10 +14,13 @@ class GameCell extends Component {
     }
   }
 
+  // const pieceData = this.state.gamePieces.find((piece) => ((piece.position_x === cellData.x) && (piece.position_y === cellData.y)))
+
   componentDidMount () {
     return (
       this.setState({ cellLayer: this.props.cellData }),
-      this.setState({ pieceLayer: this.props.pieceData })
+      this.setState({ pieceLayer: this.props.pieceData }),
+      this.setState({ isSelected: this.props.isSelected })
     )
   }
 
