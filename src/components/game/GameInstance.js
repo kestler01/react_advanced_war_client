@@ -7,9 +7,10 @@ import { updatePiece, indexPieces, createPiece } from '../../api/pieces'
 
 import { DeleteGameSuccess } from '../AutoDismissAlert/messages'
 import GameBoard from './GameBoard'
+
 // app - gameHall - index && create
 // ||
-// app - lobby - board - cells && pieces **? make them siblings or have cells be the parent of pieces ?
+// app - lobby - board - cells && pieces ( pieces are part of the cell component, might have to become a sibling at some point. )
 
 // define a game-board class ( needs state data, pieces, turn, owner.)
 class GameInstance extends Component {
@@ -50,6 +51,7 @@ class GameInstance extends Component {
       })
   }
 
+  // likely not being triggered...
   ComponentDidUpdate (prevProps) {
     // Typical usage (don't forget to compare props):
     // user, game, gamePieces
@@ -109,8 +111,7 @@ class GameInstance extends Component {
         this.props.setTurn(updatedGameData.turn)
       })
       .catch((res) => console.log('something went wrong', res))
-    // this.props.setTurn(this.props.turn + 1)
-  }
+  } // this will need a rewrite now that turn is included in the game model.
 
   componentDidMount () {
     // console.log('this.props.match.params.id', this.props.match.params.id)
@@ -174,7 +175,3 @@ class GameInstance extends Component {
 }
 
 export default withRouter(GameInstance)
-
-// define a board cell class ( needs position x , y )
-
-// define a piece class ( needs position, x and y)

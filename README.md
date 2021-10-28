@@ -44,11 +44,14 @@ A quick Final note as you explore: please do ***NOT*** use your real email for a
 
 ---
 
-#### WireFrames: 
+#### Wire Frames: 
 ![advance war wireframes](./public/AdvanceWarWireFrame.jpeg)
 
 ---
+#### State Diagram:
+![advance war state diagram](./public/advanceWarStateDiagram.jpeg)
 
+---
 #### V1 ScreenShots:
 HomePage
 ![advance war home page screenshot](./public/AdvanceWarHomePageScreenShot.jpg)
