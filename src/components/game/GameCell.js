@@ -24,10 +24,11 @@ class GameCell extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      cellLayer: null,
+      cellLayer: null, // {x: int , y: int}
+      terrainLayer: {}, // unknown
       buildingLayer: {},
-      pieceLayer: {},
-      isSelected: false
+      pieceLayer: {}, // {...pieceData}
+      isSelected: false // Bool
     }
   }
 
@@ -52,51 +53,64 @@ class GameCell extends Component {
     }
   }
 
-  moveSelector () {
-    const movePoints = this.state.pieceLayer?.movement_points // int
-    const currentX = this.state.cellLayer.x // int
-    const currentY = this.state.cellLayer.y // int
-    console.log(
-      'In toggle move selector function looking at state based vars:',
-      movePoints,
-      currentX,
-      currentY
-    )
-    const newSelection = [this.state.cellLayer] // array of objects corresponding to cell layers data -> {x:int, y:int}
-    // for (let i = 1; i <= movePoints; i++) {
-    // }
-    // add new cell objects to the newSelection array and then use the props setSelected function to send them to the gameBoard state
-    // logic checks:
+  // moveSelector () { // now moved to gameboard from game cell- add a function parameter of the cell
+  //   const movePoints = this.state.pieceLayer?.movement_points // int
+  //   const currentX = this.state.cellLayer.x // int
+  //   const currentY = this.state.cellLayer.y // int
+  //   console.log(
+  //     'In toggle move selector function looking at state based vars:',
+  //     movePoints,
+  //     currentX,
+  //     currentY
+  //   )
+  //   const newSelection = [this.state.cellLayer] // array of objects corresponding to cell layers data -> {x:int, y:int}
+  //   // for (let i = 1; i <= movePoints; i++) {
+  //   // }
+  //   // add new cell objects to the newSelection array and then use the props setSelected function to send them to the gameBoard state
+  //   // logic checks:
 
-    if ((this.state.pieceLayer !== {}) && (!this.state.isSelected)) {
-      // this cell should not be empty- if empty and not already selected we setSelected
-      this.props.setSelected(newSelection)
-    } else if ((this.state.isSelected) && (this.state.pieceLayer !== {})) {
-      // this cell should not already be selected, otherwise we want to do an action.
-      console.log(
-        ' sorry we have not written that action function yet, also you should move this piece before it acts if you want to move it at all'
-      )
-    } else if ((!this.state.isSelected) && (this.state.pieceLayer !== {})) {
-      // this cell should highlight to show which unit player has selected
-      // empty cells in range should be blue / selected
-      // to make sure you cant move over the distance through walls etc, the check should go by square and check its neighbors- looping, to simulate pathing
-      // ! we dont have access to other pieces positions at this level...
-      const x = currentX // make sure this is a value and not a reference
-      const y = currentY
-      let currentPoints = movePoints
-      while (currentPoints > 0) {
-        currentPoints -= 1
-      }
-      // empty cells not in move range but inside action range at end of move range should be outlined? ( other highlight )
-      // cells occupied by friendly units should not be highlighted, but also should not block 'path'
-      // cells with units not owned by player in range should be highlighted with red for attack actions (should also include action range )
+  //   if ((this.state.pieceLayer !== {}) && (!this.state.isSelected)) {
+  //     // this cell should not be empty- if empty and not already selected we setSelected
+  //     this.props.setSelected(newSelection)
+  //   } else if ((this.state.isSelected) && (this.state.pieceLayer !== {})) {
+  //     // this cell should not already be selected, otherwise we want to do an action.
+  //     console.log(
+  //       ' sorry we have not written that action function yet, also you should move this piece before it acts if you want to move it at all'
+  //     )
+  //   } else if ((!this.state.isSelected) && (this.state.pieceLayer !== {})) {
+  //     // this cell should highlight to show which unit player has selected
+  //     // empty cells in range should be blue / selected
+  //     // to make sure you cant move over the distance through walls etc, the check should go by square and check its neighbors- looping, to simulate pathing ?
+  //     // ! we dont have access to other pieces positions at this level...
 
-      // if cell is empty and already selected, move ( update database piece location_x and location_y data, then update gamePieces array, then redraw map )
-      // if cell is occupied by a unit not owned by player and already selected. . . hmmmmm look at how wargroove does it- you move first and then do attack goodness. - looks like i want to write an action selector for this.
+  //     let currentPoints = movePoints
+  //     // ok- here we need logic to add (x-1,y) (x+1,y) (x,y-1) (x,y+1) to the newSelection array. Then for each new one we check (x-1,y) (x+1,y) (x,y-1) (x,y+1) of THAT cell and add to the array, We want to avoid duplicates. Do we just add a bunch to the array and remove duplicates before doing the set state ?
+  //     // do we do this recursively and do a foreach on the array, starting with the first, and then doing it again and again till we run out of move points ? - works until we add 2 move or impassable cells
 
-      this.props.setSelected(newSelection)
-    }
-  }
+  //     // ! 1- take this code to the gameboard level so we cant check multiple cells data. 
+
+  //     while (currentPoints > 0) {
+  //       newSelection.forEach((cell) => {
+  //         const x = cell.x
+  //         const y = cell.y
+  //         newSelection.push({ x: x - 1, y: y }, { x: x + 1, y: y }, { x: x, y: y - 1 }, { x: x, y: y + 1 })
+  //       })
+  //       // base case - ends loop
+  //       currentPoints -= 1
+
+  //       // empty cells not in move range but inside action range at end of move range should be outlined? ( other highlight )
+  //       // cells occupied by friendly units should not be highlighted, but also should not block 'path'
+  //       // cells with units not owned by player in range should be highlighted with red for attack actions (should also include action range )
+
+  //     // if cell is empty and already selected, move ( update database piece location_x and location_y data, then update gamePieces array, then redraw map )
+  //     // if cell is occupied by a unit not owned by player and already selected. . . hmmmmm look at how wargroove does it- you move first and then do attack goodness. - looks like i want to write an action selector for this.
+  //     }
+  //     // clean up newSelection array
+
+  //     // set newSelection array
+  //     this.props.setSelected(newSelection)
+  //   }
+  // }
 
   render () {
     if (this.state.cellLayer === null) {
