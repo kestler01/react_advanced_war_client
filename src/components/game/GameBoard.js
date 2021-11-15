@@ -120,7 +120,8 @@ class GameBoard extends Component {
   }
 
   //
-  moveSelector (gameCell) { // expects the state of the component as an object with appropriate 'layers'
+  moveSelector (gameCell) {
+    // expects the state of the component as an object with appropriate 'layers'
     const movePoints = gameCell.pieceLayer?.movement_points // int
     // const currentX = gameCell.cellLayer.x // int
     // const currentY = gameCell.cellLayer.y // int
@@ -132,13 +133,17 @@ class GameBoard extends Component {
     )
     const newSelection = [gameCell.cellLayer] // array of objects corresponding to cell layers data -> [{x:int, y:int}, {x:int, y:int}, ... ]
 
-    // functions that we will use to add to our newSelection Array, north east south west
+    /// functions that we will use to add to our newSelection Array, north east south west ///
+    // TO DO : add the map tpo the backend, ensure ech cell have a move cost, and is arranged to coordinate with the cell array
+    // TO DO : bring this function to GameInstance level, ensure states flow there accordingly
+    // TO DO : begin writing other actions for pieces to be triggered below
+    // TO DO : add piece selected to the state ? (GameInstance level)
     const North = (movePoints, prevCell) => {
       const up = this.state.cellArray[prevCell.y - 1][prevCell.x] // cellArray is wrapper array, y array , x objects with KVPs of x, y
       // therefore the index of the cell will be it's [y] , [x]. value of that index should be {x:int, y:int}
       // NOTE: 0,0 is top left corner and increase towards the bottom right | 'graph of 4th quadrant'
       const moveCost = up.terrainLayer.moveCost
-      if (up && (movePoints > moveCost)) {
+      if (up && movePoints > moveCost) {
         // if the cell exists and we have enough movement we have a recursive case
         // can add a type check for not moving tanks onto hills etc if supported in backend
         // this data isn't currently stored in the cell array! when we have a pre built map from the api we will make it work.
@@ -150,12 +155,13 @@ class GameBoard extends Component {
         // do not check the cell we just checked from
       } else if (up && (movePoints = moveCost)) {
         // this is the base case/ go back
-        this.newSelection.push(up)
+        this.newSelection.push(up) // is 'this.' necessary to access the above scope of newSelection
       } else {
         console.log('in North, cant move to: up, = ', up)
       }
     }
 
+    // see North function above for comments
     const East = (movePoints, prevCell) => {
       const right = this.state.CellArray[prevCell.y][prevCell.x + 1]
       const moveCost = right.terrainLayer.moveCost
@@ -167,10 +173,11 @@ class GameBoard extends Component {
       } else if (right && (movePoints = moveCost)) {
         this.newSelection.push(right)
       } else {
-        console.log('in West, cant move to: right, = ', right)
+        console.log('in East, cant move to: right, = ', right)
       }
     }
 
+    // see North function above for comments
     const South = (movePoints, prevCell) => {
       const down = this.state.CellArray[prevCell.y][prevCell.x + 1]
       const moveCost = down.terrainLayer.moveCost
@@ -186,10 +193,11 @@ class GameBoard extends Component {
       }
     }
 
+    // see North function above for comments
     const West = (movePoints, prevCell) => {
       const left = this.state.CellArray[prevCell.y][prevCell.x + 1]
       const moveCost = left.terrainLayer.moveCost
-      if (left && (movePoints > moveCost)) {
+      if (left && movePoints > moveCost) {
         this.newSelection.push(left)
         North(movePoints - moveCost, left)
         West(movePoints - moveCost, left)
@@ -201,56 +209,33 @@ class GameBoard extends Component {
       }
     }
 
-    // bottom
-    // left
-
     // logic checks:
 
-    // if (gameCell.pieceLayer !== {} && !gameCell.isSelected) {
-    //   // this cell should not be empty- if empty and not already selected we setSelected
-    //   this.props.setSelected(newSelection)
-    // } else if (gameCell.isSelected && gameCell.pieceLayer !== {}) {
-    //   // this cell should not already be selected, otherwise we want to do an action.
-    //   console.log(
-    //     ' sorry we have not written that action function yet, also you should move this piece before it acts if you want to move it at all'
-    //   )
-    // } else if (!this.state.isSelected && this.state.pieceLayer !== {}) {
-    // this cell should highlight to show which unit player has selected
-    // empty cells in range should be blue / selected
-    // to make sure you cant move over the distance through walls etc, the check should go by square and check its neighbors- looping, to simulate pathing ?
-    // ! we dont have access to other pieces positions at this level...
+    if (!gameCell.isSelected && gameCell.pieceLayer !== {}) {
+      // this cell is not selected and is not empty -> select it
+      this.props.setSelected(newSelection)
+    } else if (gameCell.isSelected && gameCell.pieceLayer !== {}) {
+      // this cell is selected and is not empty -> do an action (like attack or use an ability)
+      console.log(
+        ' sorry we have not written that action function yet, also you should move this piece before it acts if you want to move it at all'
+      )
+    } else if (!this.state.isSelected && this.state.pieceLayer !== {}) {
+      // this cell is not selected and is not empty -> show player where it can move
+      // TO DO : should add has moved and or has acted to piece data to check here.
+      // empty cells in range should be blue / selected
+      // our recursion block checks for all available moves staring in each cardinal direction - taking into account the pieces movement points AND the movement cost of the cell traveled
+      North(movePoints, gameCell.cellLayer)
+      East(movePoints, gameCell.cellLayer)
+      South(movePoints, gameCell.cellLayer)
+      West(movePoints, gameCell.cellLayer)
+      console.log(newSelection) // there WILL be duplicates - how do I filter them out ?
 
-    // let currentPoints = movePoints
-    // ok- here we need logic to add (x-1,y) (x+1,y) (x,y-1) (x,y+1) to the newSelection array. Then for each new one we check (x-1,y) (x+1,y) (x,y-1) (x,y+1) of THAT cell and add to the array, We want to avoid duplicates. Do we just add a bunch to the array and remove duplicates before doing the set state ?
-    // do we do this recursively and do a foreach on the array, starting with the first, and then doing it again and again till we run out of move points ? - works until we add 2 move or impassable cells
+      this.props.setSelected(newSelection)
+    } else if (this.state.isSelected && this.state.pieceLayer === {}) {
+      // api call to update piece and then do an set / update to the 'gamePieces' Array. this will change the props of the game board and re-draw the cells with the pieces having moved
+    }
 
-    // ! 1- take this code to the gameboard level so we cant check multiple cells data.
-
-    // while (currentPoints > 0) {
-    //   newSelection.forEach((cell) => {
-    //     const x = cell.x
-    //     const y = cell.y
-    //     newSelection.push(
-    //       { x: x - 1, y: y },
-    //       { x: x + 1, y: y },
-    //       { x: x, y: y - 1 },
-    //       { x: x, y: y + 1 }
-    //     )
-    //   })
-    //   // base case - ends loop
-    //   currentPoints -= 1
-
-    //   // empty cells not in move range but inside action range at end of move range should be outlined? ( other highlight )
-    //   // cells occupied by friendly units should not be highlighted, but also should not block 'path'
-    //   // cells with units not owned by player in range should be highlighted with red for attack actions (should also include action range )
-
-    //   // if cell is empty and already selected, move ( update database piece location_x and location_y data, then update gamePieces array, then redraw map )
-    //   // if cell is occupied by a unit not owned by player and already selected. . . hmmmmm look at how wargroove does it- you move first and then do attack goodness. - looks like i want to write an action selector for this.
-    // }
-    // // clean up newSelection array
-
-    // // set newSelection array
-    // this.props.setSelected(newSelection)
+    // if cell is empty and already selected, move ( update database piece location_x and location_y data, then update gamePieces array, then redraw map )
   }
 
   render () {

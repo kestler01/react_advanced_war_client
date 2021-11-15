@@ -170,7 +170,9 @@ class GameInstance extends Component {
           NewPiece{' '}
         </Button>
       </>
-    )
+    )// a new component should be added here that is a card for the display of the 'selected' game cell.
+    // with adding another component and changing the game board size to use a larger defaulted map from the API - the game board component should be in a scroll-able / zoom-able window that re-centers on selected etc.
+    // may have to raise the selected and cell array states from game board into the 'instance', which makes sense since it's the intended top level of the game- should have been this way before.
   }
 }
 
