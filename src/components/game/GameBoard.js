@@ -20,7 +20,7 @@ class GameBoard extends Component {
     }
   }
 
-  // creates an array of arrays, filled with objects with KVP corresponding to their coordinates.
+  // creates an size * size board | array of arrays, filled with objects with KVP corresponding to their coordinates.
   // exp: size 3 returns =
   // [
   // [{0,0},{1,0},{2,0}],

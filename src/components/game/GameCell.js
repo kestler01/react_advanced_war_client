@@ -53,7 +53,7 @@ class GameCell extends Component {
     }
   }
 
-  // moveSelector () { // now moved to gameboard from game cell- add a function parameter of the cell
+  // moveSelector () { // now moved to gameBoard from game cell- add a function parameter of the cell
   //   const movePoints = this.state.pieceLayer?.movement_points // int
   //   const currentX = this.state.cellLayer.x // int
   //   const currentY = this.state.cellLayer.y // int
@@ -87,7 +87,7 @@ class GameCell extends Component {
   //     // ok- here we need logic to add (x-1,y) (x+1,y) (x,y-1) (x,y+1) to the newSelection array. Then for each new one we check (x-1,y) (x+1,y) (x,y-1) (x,y+1) of THAT cell and add to the array, We want to avoid duplicates. Do we just add a bunch to the array and remove duplicates before doing the set state ?
   //     // do we do this recursively and do a foreach on the array, starting with the first, and then doing it again and again till we run out of move points ? - works until we add 2 move or impassable cells
 
-  //     // ! 1- take this code to the gameboard level so we cant check multiple cells data. 
+  //     // ! 1- take this code to the gameBoard level so we cant check multiple cells data.
 
   //     while (currentPoints > 0) {
   //       newSelection.forEach((cell) => {
